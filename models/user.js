@@ -23,7 +23,9 @@ const UserSchema = new Schema({
     type: String,
     enum: [
       'ADMIN',
-      'CLIENT'
+      'CLIENT',
+      'TEACHER',
+      'DIRECTOR'
     ],
     default: 'CLIENT'
   },
