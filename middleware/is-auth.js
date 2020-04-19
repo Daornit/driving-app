@@ -31,6 +31,5 @@ module.exports = (req, res, next) => {
     email: decodedToken.email
   };
 
-  console.log("isAuth ::", req.isAuth, req.user)
   next();
 }; 

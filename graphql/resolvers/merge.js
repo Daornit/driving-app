@@ -1,7 +1,11 @@
 const DataLoader = require('dataloader');
 
 const User = require('../../models/user');
-const { dateToString } = require('../../helpers/date');
+const Durem = require('../../models/durem');
+const DuremCategory = require('../../models/duremCategory');
+const {
+  dateToString
+} = require('../../helpers/date');
 
 // const postLoader = new DataLoader(postIds => {
 //   return postsHandle(postIds);
@@ -11,9 +15,21 @@ const { dateToString } = require('../../helpers/date');
 //   return Post.find({ _id: { $in: postIds } });
 // });
 
-// const userLoader = new DataLoader(userIds => {
-//   return User.find({ _id: { $in: userIds } });
-// });
+const userLoader = new DataLoader(userIds => {
+  return User.find({
+    _id: {
+      $in: userIds
+    }
+  });
+});
+
+const duremCategoryLoader = new DataLoader(duremCategoryIds => {
+  return DuremCategory.find({
+    _id: {
+      $in: duremCategoryIds
+    }
+  });
+});
 
 // const commentLoader = new DataLoader(commentIds => {
 //   return commentsHandle(commentIds);
@@ -26,7 +42,7 @@ const { dateToString } = require('../../helpers/date');
 // const commentsHandle = async commentIds => {
 //   try {
 //     const comments = await Comment.find({ _id: { $in: commentIds } }).sort({createdDate: -1});
-    
+
 //     return comments.map(comment => {
 //       return transformComment(comment);
 //     });
@@ -35,21 +51,37 @@ const { dateToString } = require('../../helpers/date');
 //   }
 // }
 
-// const postsHandle = async postIds => {
-//   try {
-//     const posts = await Post.find({ _id: { $in: postIds } });
-//     posts.sort((a, b) => {
-//       return (
-//         postIds.indexOf(a._id.toString()) - postIds.indexOf(b._id.toString())
-//       );
-//     });
-//     return posts.map(post => {
-//       return transformPost(post);
-//     });
-//   } catch (err) {
-//     throw err;
-//   }
-// };
+const usersHandle = async userIds => {
+  try {
+    const users = await User.find({
+      _id: {
+        $in: userIds
+      }
+    });
+
+    return users.map(user => {
+      return transformUser(user);
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+const durmuudHandle = async duremIds => {
+  try {
+    const durmuud = await Durem.find({
+      _id: {
+        $in: duremIds
+      }
+    });
+
+    return durmuud.map(durem => {
+      return transformDurem(durem);
+    });
+  } catch (err) {
+    throw err;
+  }
+}
 
 // const singlePost = async postId => {
 //   try {
@@ -62,16 +94,25 @@ const { dateToString } = require('../../helpers/date');
 //   }
 // };
 
-// const user = async userId => {
-//   try {
-//     if(!userId) return null;
-//     const user = await userLoader.load(userId.toString());
-//     return transformUser(user);
-//   } catch (err) {
-//     throw err;1
-//   }
-// };
+const user = async userId => {
+  try {
+    if (!userId) return null;
+    const user = await userLoader.load(userId.toString());
+    return transformUser(user);
+  } catch (err) {
+    throw err;
+  }
+};
 
+const duremCategoryLoad = async duremCategoryId => {
+  try {
+    if (!duremCategoryId) return null;
+    const duremCategory = await duremCategoryLoader.load(duremCategoryId.toString());
+    return transformDuremCategory(duremCategory);
+  } catch (err) {
+    throw err;
+  }
+}
 // const singleCategory = async categoryId => {
 //   try {
 //     if(!categoryId) return null;
@@ -93,6 +134,66 @@ const transformUser = user => {
   }
 }
 
+
+const transformTutorial = tutorial => {
+  return {
+    ...tutorial._doc,
+    _id: tutorial.id,
+  }
+}
+
+const transformCourse = course => {
+  return {
+    ...course._doc,
+    _id: course.id,
+    students: usersHandle.bind(this, course._doc.students),
+    teachers: usersHandle.bind(this, course._doc.teachers),
+    director: user.bind(this, course.director),
+  }
+}
+
+const transformTest = test => {
+  return {
+    ...test._doc,
+    _id: test.id,
+  }
+}
+
+const transformChat = chat => {
+  return {
+    ...chat._doc,
+    _id: chat.id,
+    sendBy: user.bind(this, chat.sendBy),
+    sendTo: user.bind(this, chat.sendTo),
+    createdDate: dateToString(chat._doc.createdDate),
+  }
+}
+
+const transformSchedule = schedule => {
+  return {
+    ...schedule._doc,
+    _id: schedule.id,
+    teacher: user.bind(this, schedule.teacher),
+    student: user.bind(this, schedule.student),
+    createdDate: dateToString(schedule._doc.createdDate),
+  }
+}
+
+const transformDurem = durem => {
+  return {
+    ...durem._doc,
+    _id: durem.id,
+    category: duremCategoryLoad.bind(this, durem._doc.category) 
+  }
+}
+
+const transformDuremCategory = duremCategory => {
+  return {
+    ...duremCategory._doc,
+    _id: duremCategory.id,
+    durmuud: durmuudHandle.bind(this, duremCategory._doc.durmuud)
+  }
+}
 // const transformCategoryForPost = async postId => {
 //   const categoryIds = await PostAndCategory.distinct('category', {post: postId});
 //   const categories = await categoryLoader.loadMany(categoryIds.map(id => id.toString()));
@@ -103,18 +204,14 @@ const transformUser = user => {
 //   })
 // }
 
-// const transformPost = post => {
-//   return {
-//     ...post._doc,
-//     _id: post.id,
-//     createdDate: dateToString(post._doc.createdDate),
-//     updatedDate: dateToString(post._doc.updatedDate),
-//     author: user.bind(this, post.author),
-//     comments: () => commentLoader.loadMany(post.comments),
-//     categories: transformCategoryForPost.bind(this, post.id),
-//     lastUpdatedUser: user.bind(this, post.lastUpdatedUser),
-//   };
-// };
+const transformPost = post => {
+  return {
+    ...post._doc,
+    _id: post.id,
+    createdDate: dateToString(post._doc.createdDate),
+    author: user.bind(this, post.author),
+  };
+};
 
 // const transformTrendPosts = async categoryId => {
 //   const postAndCategories = await PostAndCategory.find({category: categoryId, type: 'TREND'}).populate('post');
@@ -190,7 +287,23 @@ const transformUser = user => {
 //     createdDate: dateToString(comment._doc.createdDate),
 //   }
 // }
+
+
+
 exports.transformUser = transformUser;
+exports.transformTutorial = transformTutorial;
+exports.transformCourse = transformCourse;
+exports.transformTest = transformTest;
+exports.transformPost = transformPost;
+exports.transformChat = transformChat;
+exports.transformSchedule = transformSchedule;
+exports.transformDurem = transformDurem;
+exports.transformDuremCategory = transformDuremCategory;
+// exports.transform = transform;
+
+
+
+
 // exports.transformPost = transformPost;
 // exports.transformComment = transformComment;
 // exports.transformCategory = transformCategory;

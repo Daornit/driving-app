@@ -4,18 +4,23 @@ const jwt = require('jsonwebtoken');
 
 const secret = process.env.SECRET;
 
-const { Schema } = mongoose;
+const {
+  Schema
+} = mongoose;
 
 const UserSchema = new Schema({
   username: {
     type: String,
     required: true
   },
+  phone: {
+    type: String
+  },
   avatar: {
     type: String
   },
-  email: { 
-    type: String, 
+  email: {
+    type: String,
     required: true,
     unique: true
   },
@@ -25,7 +30,7 @@ const UserSchema = new Schema({
       'ADMIN',
       'CLIENT',
       'TEACHER',
-      'DIRECTOR'
+      'DIRECTOR',
     ],
     default: 'CLIENT'
   },
@@ -38,38 +43,38 @@ const UserSchema = new Schema({
   salt: String,
 });
 
-UserSchema.methods.setPassword = function(password) {
-    this.salt = crypto.randomBytes(16).toString('hex');
-    this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+UserSchema.methods.setPassword = function (password) {
+  this.salt = crypto.randomBytes(16).toString('hex');
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
 };
 
-UserSchema.methods.validatePassword = function(password) {
-    const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-    return this.hash === hash;
+UserSchema.methods.validatePassword = function (password) {
+  const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+  return this.hash === hash;
 };
 
-UserSchema.methods.generateJWT = function() {
-    const today = new Date();
-    const expirationDate = new Date(today);
-    expirationDate.setDate(today.getDate() + 60);
-  
-    return jwt.sign({
-      _id: this._id.toString(),
-      email: this.email,
-      exp: parseInt(expirationDate.getTime() / 1000, 10),
-    }, secret);
+UserSchema.methods.generateJWT = function () {
+  const today = new Date();
+  const expirationDate = new Date(today);
+  expirationDate.setDate(today.getDate() + 60);
+
+  return jwt.sign({
+    _id: this._id.toString(),
+    email: this.email,
+    exp: parseInt(expirationDate.getTime() / 1000, 10),
+  }, secret);
 }
 
-UserSchema.methods.toAuthJSON = function() {
-    return {
-      _id: this._id,
-      email: this.email,
-      username: this.username,
-      type: this.type,
-      isBanned: this.isBanned,
-      avatar: this.avatar
-    };
+UserSchema.methods.toAuthJSON = function () {
+  return {
+    _id: this._id,
+    email: this.email,
+    username: this.username,
+    type: this.type,
+    isBanned: this.isBanned,
+    avatar: this.avatar,
+    phone: this.phone
+  };
 };
 
 module.exports = mongoose.model('User', UserSchema);
-  

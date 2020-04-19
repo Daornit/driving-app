@@ -7,12 +7,14 @@ require('dotenv').config();
 
 // all models 
 require('./models/user');
-// require('./models/file');
-// require('./models/post');
-// require('./models/comment');
-// require('./models/category');
-// require('./models/notification');
-// require('./models/postAndCategory');
+require('./models/chat');
+require('./models/post');
+require('./models/course');
+require('./models/durem');
+require('./models/duremCategory');
+require('./models/test');
+require('./models/schedule');
+require('./models/tutorial');
 
 const graphQlSchema = require('./graphql/schema');
 const graphQlResolvers = require('./graphql/resolvers');
@@ -47,7 +49,7 @@ server.applyMiddleware({ app });
 
 mongoose.connect(process.env.DATABASE_URL).then(() => {
   app.listen({ port: process.env.PORT || 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+  console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`)
   );
 }).catch(err => {
   throw err;

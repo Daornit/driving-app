@@ -4,7 +4,10 @@ module.exports = gql`
   type User {
     _id: ID!
     username: String!
+    phone: Int!
     avatar: String!
+    students: [User!]!
+    teacher: User!
     email: String!
     type: String!
     isBanned: Boolean!
@@ -14,6 +17,7 @@ module.exports = gql`
 
   input UserInput {
     username: String!
+    phone: Int!
     avatar: String
     email: String!
     type: String!
@@ -24,10 +28,128 @@ module.exports = gql`
     username: String
     avatar: String
     email: String
+    phone: Int
     type: String
     password: String
   }
+  
+  type Course {
+    _id: ID!
+    director: User
+    teachers:[User!]!
+    students:[User!]! 
+    name: String!
+    email: String!
+    description: String!
+    image: String
+  }
+  input CourseInput {
+    name: String!
+    image: String
+    email: String!
+    description: String!
+  }
 
+  type Post{
+    _id: ID!
+    title: String!
+    description: String!
+    type: String!
+    image: String
+    createdDate: String!
+    author: User!
+  }
+  input PostInput{
+    title: String!
+    description: String!
+    image: String
+    createdDate: String!
+  }
+  type DuremCategory{
+    _id: ID!
+    name: String!
+    durmuud: [Durem!]!
+  }
+  type Durem{
+    _id: ID!
+    category: DuremCategory!
+    title: String!
+    description: String!
+    image: String
+  }
+  input DuremInput{
+    title: String!
+    description: String!
+    image: String
+  }
+  type Test{
+    _id: ID!
+    description: String!
+    image: String
+    inputAnswer: [TestAnswer!]!
+  }
+  type TestAnswer {
+    content: String
+    image: String
+    isCorrect: Boolean!
+  }
+  input TestInput{
+    description: String!
+    image: String
+    inputAnswer: [TestAnswerInput!]!
+  }
+  input TestAnswerInput {
+    content: String
+    image: String
+    isCorrect: Boolean!
+  }
+  type Chat{
+    _id: ID!
+    description: String!
+    image: String
+    sendTo: User!
+    sendBy: User!
+    createdDate: String!
+  }
+  input ChatInput{
+    description: String!
+    image: String
+  }
+  type Tutorial{
+    _id: ID!
+    title: String!
+    description: String
+    video: String
+    image: String
+  }
+  input TutorialInput{
+    title: String!
+    description: String
+    video: String
+    image: String
+  }
+  type Schedule{
+    _id: ID!
+    events: [Event!]!
+    teacher: User!
+    student: User!
+  }
+  input ScheduleInput{
+    name: String
+    date: String
+    events:[EventInput!]!
+  }
+  input EventInput{
+    date: String!
+    name: String!
+  }
+  type Event{
+    date: String!
+    name: String!
+  }
+  type Exam{
+    _id: ID!
+  }
   type AuthData {
     _id: ID!
     exp: Int!
@@ -40,11 +162,17 @@ module.exports = gql`
     users: [User!]!
     #teacher
     monitorStudents: [User!]!
-    studentChat(userId: String!): Chat!
+    schedules: [Schedule!]!
     #client turliin hereglegchded
     generateRandomExam: Exam!
     tutorials: [Tutorial!]!
+    duremcategorys: [DuremCategory!]!
     duremuud: [Durem!]!
+    tests: [Test!]!
+    #course
+    courses: [Course!]!
+    posts: [Post!]!
+    chats: [Chat!]!
 
   }
 
@@ -57,27 +185,30 @@ module.exports = gql`
     #Admin ii hiih uildel
     createCourse(course: CourseInput!): Course!
     deleteCourse(courseId: String!): Course!
-    addDirector(courseId: String userId: String!) Course!
-    removeDirector(courseId: String, userId: String)! Course!
+    addDirector(courseId: String userId: String!): Course!
+    removeDirector(courseId: String, userId: String): Course!
 
-    addDurem(durem: DuremInput!): Durem!
+    createDuremCategory(name: String!): DuremCategory!
+    addDurem(durem: DuremInput!, duremCategoryId: String!): Durem!
     removeDurem(duremId: String!): Durem!
     addTest(test: TestInput!): Test!
     removeTest(testId: String!): Test!
+    addTutorial(tutorial: TutorialInput!): Tutorial!
+    removeTutorial(tutorialId: String): Tutorial!
 
     #Director hiih uildeluud
     addPost(post: PostInput!): Post!
     removePost(postId: String!): Post!
-    updateCourseInfo(course: CourseInput!): Course!
-    addStudentToCourse(userId: String!): Course!
-    removeStudentFromCourse(userId: String!): Course!
-    addTeacherToCourse(userId: String!): Course!
-    removeTeacherFromCourse(userId: String!): Course!
+    updateCourseInfo(course: CourseInput! courseId: String!): Course!
+    addStudentToCourse(userId: String! courseId: String!): Course!
+    removeStudentFromCourse(userId: String! courseId: String!): Course!
+    addTeacherToCourse(userId: String! courseId: String!): Course!
+    removeTeacherFromCourse(userId: String! courseId: String!): Course!
 
     #teacher hiih uildel
-    addCalendarSchedule(courseId: String! schedule: Schedule!): Schedule!
-    removeCalendarSchedule(scheduleId: String): Schedule!
+    addCalendarSchedule(studentId: String! schedule: ScheduleInput!): Schedule!
+    removeCalendarSchedule(scheduleId: String!): Schedule!
     #teacher bolon client
-    sendChat(userId: String, chatInput: ChatInput!) Chat!;
+    sendChat(userId: String, chatInput: ChatInput!): Chat!
   }
 `;
