@@ -14,17 +14,22 @@ const CourseInformation = (props) => {
     console.log('data:: ', data.users);
     return (
         <div id="courseContent" style={props.timeout ? {display: 'none'} : {}}>
-    
-                <div className="courses">
-                    <h1>Батхүлэг</h1>
-                    <span className="image main"><img src="/static/images/batkhuleg.png" alt="" /></span>
-                    <p>Батхүлэгийн эзэд замдаа жаргалтай.</p>
-                    <button><a href="javascript:;" onClick={() => {props.onOpenArticle('bat')}}>Дэлгэрэнгүй</a></button>
-            </div>
+           
+            
             <div className="courses">
                 
-                    {data.users.map(user => <p key = {user._id}>{user.username}</p>)}
-                
+                    
+                {/* {data.courses.map(course => <div key={course._id} className="courses">
+                <h1>{course.name}</h1>
+                <span className="image main"><img src="/static/images/batkhuleg.png" alt="" /></span>
+                <p>{course.description}</p>
+                <button><a href="javascript:;" onClick={() => {props.onOpenArticle('bat')}}>Дэлгэрэнгүй</a></button>
+            
+            </div>)} */}
+            <h1>Batkhuleg</h1>
+                <span className="image main"><img src="/static/images/batkhuleg.png" alt="" /></span>
+                <p>blah21342342</p>
+                <button><a href="javascript:;" onClick={() => {props.onOpenArticle('bat')}}>Дэлгэрэнгүй</a></button>
             </div>
             
         </div>
