@@ -19,7 +19,8 @@ module.exports = {
   courseMutationResolver: {
     createCourse: async (parent, args, context, info) => {
       try {
-        console.log("args:: ", args);
+        console.log("args:: ", args, context.user);
+
         const existingCourse = await Course.findOne({
           name: args.course.name
         });
@@ -32,7 +33,7 @@ module.exports = {
           description: args.course.description,
           image: args.course.image,
           email: args.course.email,
-          director: null,
+          director: context.user._id ? context.user._id: "",
           students: [],
           teacher: []
         });
