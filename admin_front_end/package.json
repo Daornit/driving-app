@@ -5,8 +5,15 @@
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
     "@material-ui/core": "4.3.2",
     "@material-ui/icons": "4.2.1",
+    "apollo-boost": "^0.4.7",
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-client": "^2.6.8",
+    "apollo-link-context": "^1.0.20",
+    "apollo-link-http": "^1.5.17",
+    "axios": "^0.19.2",
     "chartist": "0.10.1",
     "classnames": "2.2.6",
     "history": "4.9.0",
@@ -17,6 +24,7 @@
     "react-chartist": "0.13.3",
     "react-dom": "16.9.0",
     "react-google-maps": "9.4.5",
+    "react-notifications-component": "^2.4.0",
     "react-router-dom": "5.0.1",
     "react-scripts": "3.1.0",
     "react-swipeable-views": "0.13.3"

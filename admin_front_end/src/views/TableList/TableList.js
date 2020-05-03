@@ -16,6 +16,13 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Tasks from "components/Tasks/Tasks";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
+import TextField from '@material-ui/core/TextField';
+
+
+//graphql
+import { GET_COURSES, DELETE_COURSE, CREATE_COURSE } from 'queries.js';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import notification from 'helpers/notification';
 
 
 function getModalStyle() {
@@ -77,10 +84,88 @@ const useStyles = makeStyles(
 
 export default function TableList() {
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
+
+  const [ deleteCourse ] = useMutation(DELETE_COURSE);
+  const [ createCourse ] = useMutation(CREATE_COURSE);
+
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  const [newCourse, setNewCourse] = React.useState({
+    name: "",
+    email: "",
+    image: "",
+    description:""
+  });
 
+  const { loading, err, data, refetch } = useQuery(GET_COURSES);
+
+  if (loading) return 'Loading...';
+  if (err) {
+    notification.error(err.message);
+    return err.message;
+  };
+
+  const handleChange = event => {
+    const name = event.target.name;
+    setNewCourse({
+      ...newCourse,
+      [name]: event.target.value,
+    });
+  };
+
+  const handleCreateCourse = () => {
+    console.log(newCourse);
+    if(!newCourse.name){
+      notification.error('name talbariig zaaval buglunu uu')
+      return;
+    }
+    createCourse({
+      variables: {
+        course: newCourse
+      }
+    })
+    refetch();
+    setNewCourse({
+      name: "",
+      email: "",
+      image: "",
+      description:""
+    })
+    setOpen(false);
+    notification.success('amjilttai uuslee')
+  }
+
+  let listOfCourse = [];
+  if(data && data.courses){
+    data.courses.forEach((obj, index) => {
+      let course = [];
+      course.push(index);
+      course.push(obj.name);
+      course.push(obj.director.username);
+      course.push(obj.email);
+      course.push(obj.director.phone);
+      course.push(<IconButton
+                      aria-label="Close"
+                      className={classes.tableActionButton}
+                    > <Close
+                    className={
+                      classes.tableActionButtonIcon + " " + classes.close
+                    }
+                    onClick={() => {
+                        deleteCourse({
+                          variables: {
+                            courseId: obj._id
+                          }
+                        });
+                        refetch();
+                      }
+                    }
+                  />
+                </IconButton>);
+      listOfCourse.push(course);
+    })
+  }
+  
   const handleOpen = () => {
     setOpen(true);
   };
@@ -88,17 +173,6 @@ export default function TableList() {
   const handleClose = () => {
     setOpen(false);
   };
-  const deleteIcon = (
-    <IconButton
-                aria-label="Close"
-                className={classes.tableActionButton}
-              > <Close
-              className={
-                classes.tableActionButtonIcon + " " + classes.close
-              }
-            />
-          </IconButton>
-  );
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -116,31 +190,33 @@ export default function TableList() {
       <GridContainer id="simple-modal-description">
         
                 <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Курсийн нэр"
-                    id="course_name"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-
+                  <TextField
+                    label="Нэр" 
+                    name="name"
+                    value={newCourse.name} 
+                    className={classes.margin15}
+                    onChange={handleChange}
+                    fullWidth
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Цахим шуудан(Email)"
-                    id="email"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                  <TextField
+                    label="Цахим шуудан(Email)" 
+                    name="email"
+                    value={newCourse.email} 
+                    className={classes.margin15}
+                    onChange={handleChange}
+                    fullWidth
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
-                  <CustomInput
-                    labelText="Зургийн URL"
-                    id="img"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                   <TextField
+                    label="Зургийн URL" 
+                    name="image"
+                    value={newCourse.image} 
+                    className={classes.margin15}
+                    onChange={handleChange}
+                    fullWidth
                   />
                 </GridItem>
               </GridContainer>
@@ -151,12 +227,14 @@ export default function TableList() {
                     
                       
                   <TextareaAutosize style={{width: "100%"}}
+                    name="description"
+                    value={newCourse.description} 
+                    className={classes.margin15}
+                    onChange={handleChange}
                     rows={10}
-                    aria-label="Курсын дэлгэрэнгүй тайлбар."
                     placeholder="Курсын дэлгэрэнгүй тайлбар."
                     
                   />
-                  
                   
                 </GridItem>
 
@@ -166,7 +244,8 @@ export default function TableList() {
               <GridItem xs={12} sm={12} md={4}>
         <Button
           fullWidth
-          color="primary"          
+          color="primary" 
+          onClick={handleCreateCourse}         
         >          
         Нэмэх
         </Button>
@@ -218,11 +297,7 @@ export default function TableList() {
             <Table
               tableHeaderColor="primary"
               tableHead={["ID","Name", "Directory", "Email", "Phone", "Action"]}
-              tableData={[
-                ["1","Батхүлэг", "Бархасболд", "batkhuleg@gmail.com", "9773507", deleteIcon],
-                ["2","Билгүүнтулга", "Бархасболд", "bilguuntulga@gmail.com", "99999999", deleteIcon],
-                
-              ]}
+              tableData={listOfCourse}
             />
           </CardBody>
         </Card>
