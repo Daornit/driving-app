@@ -2,27 +2,27 @@ import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardBody from "components/Card/CardBody.js";
-import Button from "components/CustomButtons/Button.js";
+import GridItem from "views/DuremAdmin/node_modules/components/Grid/GridItem.js.js";
+import GridContainer from "views/DuremAdmin/node_modules/components/Grid/GridContainer.js.js";
+import Table from "views/DuremAdmin/node_modules/components/Table/Table.js.js";
+import Card from "views/DuremAdmin/node_modules/components/Card/Card.js.js";
+import CardHeader from "views/DuremAdmin/node_modules/components/Card/CardHeader.js.js";
+import CardBody from "views/DuremAdmin/node_modules/components/Card/CardBody.js.js";
+import Button from "views/DuremAdmin/node_modules/components/CustomButtons/Button.js.js";
 import Modal from '@material-ui/core/Modal';
-import CustomInput from "components/CustomInput/CustomInput.js";
+import CustomInput from "views/DuremAdmin/node_modules/components/CustomInput/CustomInput.js.js";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import Tasks from "components/Tasks/Tasks";
+import Tasks from "views/DuremAdmin/node_modules/components/Tasks/Tasks";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
 import TextField from '@material-ui/core/TextField';
 
 
 //graphql
-import { GET_COURSES, DELETE_COURSE, CREATE_COURSE } from 'queries.js';
+import { GET_COURSES, DELETE_COURSE, CREATE_COURSE } from 'views/DuremAdmin/node_modules/queries.js.js';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import notification from 'helpers/notification';
+import notification from 'views/DuremAdmin/node_modules/helpers/notification';
 
 
 function getModalStyle() {
@@ -82,7 +82,7 @@ const useStyles = makeStyles(
   })
 );
 
-export default function TableList() {
+export default function CourseAdmin() {
   const classes = useStyles();
 
   const [ deleteCourse ] = useMutation(DELETE_COURSE);
@@ -177,121 +177,110 @@ export default function TableList() {
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <Card>
-      <GridContainer id="simple-modal-title">
-        
+        <GridContainer id="simple-modal-title">
           <CardHeader color="primary">
-        <GridItem xs={12} sm={12} md={12}>
-        <h4 className={classes.cardTitleWhite}>Жолооны курс нэмэх</h4>
-        
-      </GridItem>
-      </CardHeader>
-      </GridContainer>
-      <CardBody>
-      <GridContainer id="simple-modal-description">
-        
-                <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    label="Нэр" 
-                    name="name"
-                    value={newCourse.name} 
-                    className={classes.margin15}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    label="Цахим шуудан(Email)" 
-                    name="email"
-                    value={newCourse.email} 
-                    className={classes.margin15}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
-                   <TextField
-                    label="Зургийн URL" 
-                    name="image"
-                    value={newCourse.image} 
-                    className={classes.margin15}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                </GridItem>
-              </GridContainer>
-              <br></br>
-              <GridContainer>
-
-                  <GridItem xs={12} sm={12} md={12}>
-                    
-                      
-                  <TextareaAutosize style={{width: "100%"}}
-                    name="description"
-                    value={newCourse.description} 
-                    className={classes.margin15}
-                    onChange={handleChange}
-                    rows={10}
-                    placeholder="Курсын дэлгэрэнгүй тайлбар."
-                    
-                  />
-                  
-                </GridItem>
-
-              </GridContainer>
-              </CardBody>
-              <GridContainer>
-              <GridItem xs={12} sm={12} md={4}>
-        <Button
-          fullWidth
-          color="primary" 
-          onClick={handleCreateCourse}         
-        >          
-        Нэмэх
-        </Button>
-                
-      </GridItem>
-      
-              </GridContainer>
-              </Card>
+            <GridItem xs={12} sm={12} md={12}>
+              <h4 className={classes.cardTitleWhite}>Жолооны курс нэмэх</h4>
+            </GridItem>
+          </CardHeader>
+        </GridContainer>
+        <CardBody>
+            <GridContainer id="simple-modal-description">
+              <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                  label="Нэр" 
+                  name="name"
+                  value={newCourse.name}
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                  label="Цахим шуудан(Email)" 
+                  name="email"
+                  value={newCourse.email} 
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={12} md={12}>
+                <TextField
+                  label="Зургийн URL" 
+                  name="image"
+                  value={newCourse.image} 
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+            </GridContainer>
+            <br></br>
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={12}>
+                <TextareaAutosize style={{width: "100%"}}
+                  name="description"
+                  value={newCourse.description} 
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  rows={10}
+                  placeholder="Курсын дэлгэрэнгүй тайлбар."  
+                />
+              </GridItem>
+            </GridContainer>
+          </CardBody>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={4}>
+            <Button
+              fullWidth
+              color="primary" 
+              onClick={handleCreateCourse}         
+              >
+              Нэмэх
+            </Button>
+          </GridItem>
+        </GridContainer>
+      </Card>
     </div>
   );
   return (
     <GridContainer>
-      
       <Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="simple-modal-title"
-  aria-describedby="simple-modal-description"
->{body}</Modal>
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
       <GridItem xs={12} sm={12} md={12}>
-        
         <Card>
-          
-<GridContainer>
-<GridItem xs={12} sm={12} md={12}>
-          <CardHeader color="primary">
-            <GridContainer>
-          <GridItem xs={12} sm={12} md={8}>
-            <h4 className={classes.cardTitleWhite}>Жолооны Курсүүд</h4>
-            <p className={classes.cardCategoryWhite}>
-              Манай вебд бүртгэлтэй жолооны курсүүд
-            </p>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <CardHeader color="primary">
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={8}>
+                    <h4 className={classes.cardTitleWhite}>Жолооны Курсүүд</h4>
+                      <p className={classes.cardCategoryWhite}>
+                        Манай вебд бүртгэлтэй жолооны курсүүд
+                      </p>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <Button
+                      fullWidth
+                      color="white"
+                      onClick={handleOpen}          
+                    >
+                      <a color="primary">          
+                        Жолооны курс нэмэх
+                      </a>
+                    </Button>
+                  </GridItem> 
+                </GridContainer>     
+              </CardHeader>
             </GridItem>
-            <GridItem xs={12} sm={12} md={4}>
-        <Button
-          fullWidth
-          color="white"
-          onClick={handleOpen}          
-        ><a color="primary">          
-        Жолооны курс нэмэх
-        </a>
-        </Button>
-        </GridItem> 
-        </GridContainer>     
-          </CardHeader>
-          </GridItem>
           </GridContainer>
           <CardBody>
             <Table
@@ -302,8 +291,6 @@ export default function TableList() {
           </CardBody>
         </Card>
       </GridItem>
-
-      
     </GridContainer>
   );
 }

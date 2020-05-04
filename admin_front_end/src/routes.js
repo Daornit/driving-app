@@ -1,21 +1,4 @@
-/*!
 
-=========================================================
-* Material Dashboard React - v1.8.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-// @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
@@ -25,18 +8,18 @@ import Notifications from "@material-ui/icons/Notifications";
 import Unarchive from "@material-ui/icons/Unarchive";
 import Language from "@material-ui/icons/Language";
 // core components/views for Admin layout
-import DashboardPage from "views/Dashboard/Dashboard.js";
+import DuremAdmin from "views/DuremAdmin/DuremAdmin.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
-import TableList from "views/TableList/TableList.js";
-import Typography from "views/Typography/Typography.js";
+import CourseAdmin from "views/CourseAdmin/CourseAdmin.js";
+import PostAdmin from "views/PostAdmin/PostAdmin.js";
 import Durem from "views/Durem/Durem.js"
-import Icons from "views/Icons/Icons.js";
+import BeldehAdmin from "views/BeldehAdmin/BeldehAdmin.js";
 import Test from "views/test/Test.js";
 import Beldeh from "views/beldeh/beldeh.js"
-import Maps from "views/Maps/Maps.js";
+import CalendarStudent from "views/CalendarStudent/CalendarStudent.js";
 import Tutorial from "views/tutorial/Tutorial.js"
 import TutorialAdmin from "views/tutorialAdmin/TutorialAdmin.js"
-import NotificationsPage from "views/Notifications/Notifications.js";
+import TestAdmin from "views/TestAdmin/TestAdmin.js";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
 // core components/views for RTL layout
 
@@ -46,15 +29,15 @@ const dashboardRoutes = [
     path: "/course",
     name: "Жолооны курс",
     icon: "content_paste",
-    component: TableList,
+    component: CourseAdmin,
     layout: "/admin"
   },
   
   {
     path: "/durem",
-    name: "Дүрэм",
+    name: "Дүрэм админ",
     icon: Dashboard,
-    component: DashboardPage,
+    component: DuremAdmin,
     layout: "/admin"
   },
   
@@ -62,28 +45,28 @@ const dashboardRoutes = [
     path: "/news",
     name: "Мэдээ мэдээлэл",
     icon: LibraryBooks,
-    component: Typography,
+    component: PostAdmin,
     layout: "/admin"
   },
   {
     path: "/calendar",
     name: "Календарь",
     icon: "content_paste",
-    component: Maps,
+    component: CalendarStudent,
     layout: "/admin"
   },
   {
     path: "/answer",
     name: "Шалгалтад бэлдэх",
     icon: Unarchive,
-    component: Icons,
+    component: BeldehAdmin,
     layout: "/admin"
   },
   {
     path: "/test",
     name: "Шалгалт",
     icon: LibraryBooks,
-    component: NotificationsPage,
+    component: TestAdmin,
     layout: "/admin"
   },
   {

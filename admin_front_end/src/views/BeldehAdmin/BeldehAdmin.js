@@ -90,7 +90,7 @@ const useStyles = makeStyles(
     }
   })
 );
-export default function Icons() {
+export default function BeldehAdmin() {
   const classes = useStyles();
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState(false);

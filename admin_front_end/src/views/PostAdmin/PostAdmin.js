@@ -1,27 +1,17 @@
 import React from "react";
-
-// @material-ui/core
-
+// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// @material-ui/icons
-
 // core components
-import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Button from "components/CustomButtons/Button.js";
-
+import Quote from "components/Typography/Quote.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-
-import { bugs, website} from "variables/general.js";
+import Button from "components/CustomButtons/Button.js";
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
 import Modal from '@material-ui/core/Modal';
 import CustomInput from "components/CustomInput/CustomInput.js";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-
-
 
 
 
@@ -65,6 +55,24 @@ const useStyles = makeStyles(
         lineHeight: "1"
       }
     },
+    typo: {
+      paddingLeft: "15%",
+      marginBottom: "40px",
+      position: "relative"
+    },
+    note: {
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      bottom: "10px",
+      color: "#c0c1c2",
+      display: "block",
+      fontWeight: "400",
+      fontSize: "13px",
+      lineHeight: "13px",
+      left: "0",
+      marginLeft: "20px",
+      position: "absolute",
+      width: "260px"
+    },
     paper: {
       position: 'absolute',
       width: 400,
@@ -82,9 +90,9 @@ const useStyles = makeStyles(
   })
 );
 
-export default function Dashboard() {
+
+export default function PostAdmin() {
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
 
@@ -96,14 +104,14 @@ export default function Dashboard() {
     setOpen(false);
   };
 
-  const body1 = (
+  const body = (
     <div style={modalStyle} className={classes.paper}>
       <Card>
       <GridContainer id="simple-modal-title">
         
           <CardHeader color="primary">
         <GridItem xs={12} sm={12} md={12}>
-        <h4 className={classes.cardTitleWhite}>Дүрэм нэмэх</h4>
+        <h4 className={classes.cardTitleWhite}>Зарлал нэмэх</h4>
       </GridItem>
       </CardHeader>
       </GridContainer>
@@ -112,8 +120,8 @@ export default function Dashboard() {
         
                 <GridItem xs={12} sm={12} md={12}>
                   <CustomInput
-                    labelText="Дүрмийн гарчиг"
-                    id="durem_name"
+                    labelText="Зарлалын гарчиг"
+                    id="post_name"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -138,8 +146,8 @@ export default function Dashboard() {
                       
                   <TextareaAutosize style={{width: "100%"}}
                     rows={10}
-                    aria-label="Дүрмийн дэлгэрэнгүй"
-                    placeholder="Дүрмийн дэлгэрэнгүй"
+                    aria-label="Зарлалын дэлгэрэнгүй"
+                    placeholder="Зарлалын дэлгэрэнгүй"
                     
                   />
                   
@@ -163,56 +171,100 @@ export default function Dashboard() {
               </Card>
     </div>
   );
+  
   return (
+    <>
     <div>
       <GridContainer>
+      <GridItem xs={12} sm={12} md={4}>
+        <Button
+          fullWidth
+          color="primary"          
+        >          
+        Зарлал
+        </Button>
+        </GridItem>
         <GridItem xs={12} sm={12} md={4}>
         <Button
           fullWidth
-          color="primary" 
-          onClick={handleOpen}         
+          color="primary"          
         >          
-        Шинээр дүрэм нэмэх
+        Зөвөлгөө
         </Button>
         </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+        <Button
+          fullWidth
+          color="primary"          
+        >          
+        Хууль
+        </Button>
+        </GridItem>
+        </GridContainer>
+    </div>
+    <Card>
+
+      <CardHeader >
+        <GridContainer>
+      <GridItem xs={12} sm={12} md={4}>
+        <Button
+          fullWidth
+          color="primary"
+          onClick={handleOpen}          
+        >          
+        Нэмэх
+        </Button>
         <Modal
   open={open}
   onClose={handleClose}
   aria-labelledby="simple-modal-title"
   aria-describedby="simple-modal-description"
->{body1}</Modal>
-
-        <GridItem xs={12} sm={12} md={12}>
-          <CustomTabs
-            title="Дүрэм:"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: "Гарчиг",
-
-                tabContent: (
-                  <Tasks
-                    tasksIndexes={[0, 1, 2, 3]} 
-                    tasks={bugs}
-                  />
-                )
-              },
-              {
-                tabName: "Ангилал",
-                
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
-                  />
-                )
-              }
-            ]} 
-          />
-
+>{body}</Modal> 
         </GridItem>
-      </GridContainer>
-    </div>
+        <GridItem xs={12} sm={12} md={4}>
+        <Button
+          fullWidth
+          color="primary"
+                     
+        >          
+        Устгах
+        </Button>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+        <Button
+          fullWidth
+          color="primary"          
+        >          
+        Шинэчлэх
+        </Button>
+        </GridItem>
+        </GridContainer>
+      </CardHeader>
+      <CardBody>
+        <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+        <div className={classes.typo}>
+          <div className={classes.note}>Зарлал</div>
+          <Quote
+            text="B болон BC ангилалд хямдрал зарлалаа"
+            author="Батхүлэг"
+          />
+        </div>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+        <div className={classes.typo}>
+          <div className={classes.note}>Зарлал</div>
+          <Quote
+            text="B болон BC ангилалд хямдрал зарлалаа"
+            author="Батхүлэг"
+
+          />
+        </div>
+        </GridItem>
+        </GridContainer>
+        
+      </CardBody>
+    </Card>
+    </>
   );
 }

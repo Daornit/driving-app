@@ -67,7 +67,7 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function Notifications() {
+export default function TestAdmin() {
   const classes = useStyles();
   const [tl, setTL] = React.useState(false);
   const [tc, setTC] = React.useState(false);
