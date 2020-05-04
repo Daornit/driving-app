@@ -54,7 +54,7 @@ ReactDOM.render(
           <Route path="/student" component={Admin} />
           <Route path="/teacher" component={Admin} />
           <Route path="/director" component={Admin} />
-          <Redirect from="/" to="/admin/course" />
+          <Redirect from="/" to="/login" />
         </Switch>
       </Router>
     </>

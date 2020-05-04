@@ -14,16 +14,7 @@ const PostSchema = new Schema({
   description: {
     type: String
   },
-  type: {
-    type: String,
-    enum: [
-      'NOTICE',
-      'LEGAL',
-      'ADVICE',
-      'DUREM'
-    ],
-    default: 'NOTICE'
-  },
+  
   author: {
     type: Schema.Types.ObjectId,
     ref: "User"

@@ -26,116 +26,261 @@ import FormControl from '@material-ui/core/FormControl';
 
 import avatar from "assets/img/faces/test1.jpg";
 
-const styles = {
-  
-  cardCategoryWhite: {
-    "&,& a,& a:hover,& a:focus": {
-      color: "rgba(255,255,255,.62)",
-      margin: "0",
-      fontSize: "14px",
-      marginTop: "0",
-      marginBottom: "0"
-    },
-    "& a,& a:hover,& a:focus": {
-      color: "#FFFFFF"
-    }
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-    "& small": {
-      color: "#777",
-      fontSize: "65%",
-      fontWeight: "400",
-      lineHeight: "1"
-    }
-  },
-  testimg:{
-      maxWidth: "130px",
-      maxHeight: "130px",
-      padding: "0",
-      "&$cardAvatarPlain": {
-        marginTop: "0"
-      }
-  }
-};
 
-const useStyles = makeStyles(styles);
+//graphql
+import { GET_TESTS, DELETE_TEST, CREATE_TEST } from 'queries';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import notification from 'helpers/notification';
+
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+
+const useStyles = makeStyles(
+  (theme) => ({
+    cardCategoryWhite: {
+      "&,& a,& a:hover,& a:focus": {
+        color: "rgba(255,255,255,.62)",
+        margin: "0",
+        fontSize: "14px",
+        marginTop: "0",
+        marginBottom: "0"
+      },
+      "& a,& a:hover,& a:focus": {
+        color: "#FFFFFF"
+      }
+    },
+    cardTitleWhite: {
+      color: "#FFFFFF",
+      marginTop: "0px",
+      minHeight: "auto",
+      fontWeight: "300",
+      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      marginBottom: "3px",
+      textDecoration: "none",
+      "& small": {
+        color: "#777",
+        fontSize: "65%",
+        fontWeight: "400",
+        lineHeight: "1"
+      }
+    },
+    paper: {
+      position: 'absolute',
+      width: 400,
+      border: '2px solid #000',
+      backgroundColor: theme.palette.background.paper,
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      'p':{
+        color: "primary",
+      },
+    },
+    head: {
+      backgroundColor: "primary", 
+    }
+  })
+);
+
 
 export default function TestAdmin() {
   const classes = useStyles();
-  const [tl, setTL] = React.useState(false);
-  const [tc, setTC] = React.useState(false);
-  const [tr, setTR] = React.useState(false);
-  const [bl, setBL] = React.useState(false);
-  const [bc, setBC] = React.useState(false);
-  const [br, setBR] = React.useState(false);
-  React.useEffect(() => {
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      // to stop the warning of calling setState of unmounted component
-      var id = window.setTimeout(null, 0);
-      while (id--) {
-        window.clearTimeout(id);
-      }
-    };
+
+  const [ deleteTest ] = useMutation(DELETE_TEST);
+  const [ createTest ] = useMutation(CREATE_TEST);
+
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+  const [newTest, setNewTest] = React.useState({
+    name: "",
+    email: "",
+    image: "",
+    description:""
   });
-  const [value, setValue] = React.useState('');
-  const [error, setError] = React.useState(false);
-  const [helperText, setHelperText] = React.useState('Choose wisely');
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-    setHelperText(' ');
-    setError(false);
+  const { loading, err, data, refetch } = useQuery(GET_TESTS);
+
+  if (loading) return 'Loading...';
+  if (err) {
+    notification.error(err.message);
+    return err.message;
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleChange = event => {
+    const name = event.target.name;
+    setNewCourse({
+      ...newTest,
+      [name]: event.target.value,
+    });
   };
+
+  const handleCreateTest = () => {
+    console.log(newTest);
+    if(!newTest.name){
+      notification.error('name talbariig zaaval buglunu uu')
+      return;
+    }
+    createTest({
+      variables: {
+        tests: newTest
+      }
+    })
+    refetch();
+    setNewTest({
+      image: "",
+      description:"",
+      inputAnswer:[]
+    })
+    setOpen(false);
+    notification.success('amjilttai uuslee')
+  }
+
+  let listOfTest = [];
+  if(data && data.tests){
+    data.tests.forEach((obj, index) => {
+      let test = [];
+      test.push(index);
+      test.push(obj.description);
+      test.push(obj.image);
+      test.push(obj.inputAnswer);
+      test.push(<IconButton
+                      aria-label="Close"
+                      className={classes.tableActionButton}
+                    > <Close
+                    className={
+                      classes.tableActionButtonIcon + " " + classes.close
+                    }
+                    onClick={() => {
+                        deleteCourse({
+                          variables: {
+                            courseId: obj._id
+                          }
+                        });
+                        refetch();
+                      }
+                    }
+                  />
+                </IconButton>);
+      listOfCourse.push(course);
+    })
+  }
+  
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <Card>
+        <GridContainer id="simple-modal-title">
+          <CardHeader color="primary">
+            <GridItem xs={12} sm={12} md={12}>
+              <h4 className={classes.cardTitleWhite}>Жолооны курс нэмэх</h4>
+            </GridItem>
+          </CardHeader>
+        </GridContainer>
+        <CardBody>
+            <GridContainer id="simple-modal-description">
+              <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                  label="Нэр" 
+                  name="name"
+                  value={newCourse.name}
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                  label="Цахим шуудан(Email)" 
+                  name="email"
+                  value={newCourse.email} 
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={12} md={12}>
+                <TextField
+                  label="Зургийн URL" 
+                  name="image"
+                  value={newCourse.image} 
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+            </GridContainer>
+            <br></br>
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={12}>
+                <TextareaAutosize style={{width: "100%"}}
+                  name="description"
+                  value={newCourse.description} 
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  rows={10}
+                  placeholder="Курсын дэлгэрэнгүй тайлбар."  
+                />
+              </GridItem>
+            </GridContainer>
+          </CardBody>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={4}>
+            <Button
+              fullWidth
+              color="primary" 
+              onClick={handleCreateCourse}         
+              >
+              Нэмэх
+            </Button>
+          </GridItem>
+        </GridContainer>
+      </Card>
+    </div>
+  );
   return (
     <>
-    <div>
-      <GridContainer>
-      <GridItem xs={12} sm={12} md={4}>
-        <Button
-          fullWidth
-          color="primary"          
-        >          
-        Шалгалтын тест нэмэх
-        </Button>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-        <Button
-          fullWidth
-          color="primary"          
-        >          
-        Шалгалтын тест устгах
-        </Button>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-        <Button
-          fullWidth
-          color="primary"          
-        >          
-        Шалгалтын тест засах
-        </Button>
-        </GridItem>
-        </GridContainer>
-    </div>
-    
     <Card>
-      <CardHeader color="primary">
-        <h4 className={classes.cardTitleWhite}>Шалгалтын тест</h4>
-        <p className={classes.cardCategoryWhite}>
-          Шалгалтын тестүүд
-        </p>
-      </CardHeader>
+    <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <CardHeader color="primary">
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={8}>
+                    <h4 className={classes.cardTitleWhite}>Жолооны Тестүүд</h4>
+                      <p className={classes.cardCategoryWhite}>
+                        Манай вебд бүртгэлтэй тестүүд
+                      </p>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <Button
+                      fullWidth
+                      color="white"
+                      onClick={handleOpen}          
+                    >
+                      <a color="primary">          
+                        Жолооны тест нэмэх
+                      </a>
+                    </Button>
+                  </GridItem> 
+                </GridContainer>     
+              </CardHeader>
+            </GridItem>
+          </GridContainer>
       <CardBody>
         <GridContainer>
           

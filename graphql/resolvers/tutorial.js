@@ -7,8 +7,8 @@ module.exports = {
   tutorialQueryResolver: {
     tutorials: async (parent, args, context, info) => {
       try {
-        const tutorials = await Turorial.find();
-        return tutorials.map(tutorial => transformTurorial(tutorial));
+        const tutorials = await Tutorial.find();
+        return tutorials.map(tutorial => transformTutorial(tutorial));
       } catch (err) {
         throw err;
       }

@@ -26,6 +26,128 @@ export const ME = gql`
   }
 `;
 
+export const GET_USERS = gql`
+  query {
+    users {
+      _id
+      username
+      type
+      email
+      phone
+      isBanned
+    }
+  }
+`;
+export const BAN_USERS = gql`
+  mutation banUser($userId: String!){
+    banUser(userId:$userId){
+      _id
+    }
+  }
+`;
+
+
+export const CREATE_USERS = gql`
+  mutation createUser(
+  $username:String!,
+  $phone: Int!, 
+  $avatar:String!, 
+  $email:String!, 
+  $type: String!,
+  $password: String!
+){
+  createUser(userInput:{
+    username: $username
+    phone: $phone
+    avatar: $avatar 
+    email: $email
+    type: $type
+    password: $password
+  }){
+    username
+    phone
+    avatar
+    email
+    type
+  }
+}
+`;
+
+export const GET_POSTS = gql`
+  query{posts{
+    _id
+    title
+    description
+    image
+    createdDate
+    author{
+      username
+    }
+  }}
+`;
+
+
+export const DELETE_POST = gql`
+  mutation removePost($postId: String!){
+    removePost(postId:$postId){
+      _id
+    }
+  }
+`;
+
+
+export const CREATE_POST = gql`
+  mutation addPost($postInput: PostInput!){
+  addPost(post:$postInput){
+    _id
+    title
+    description
+    image
+    createdDate
+    author{
+      username
+    }
+  }
+}
+`;
+
+
+
+export const GET_TUTORIALS = gql`
+  query{
+  tutorials{
+    _id
+    title
+    description
+    video
+    image
+  }
+}
+`;
+
+
+export const DELETE_TUTORIALS = gql`
+  mutation removeTutorial($tutorialId: String!){
+    removeTutorial(tutorialId:$tutorialId){
+      _id
+    }
+  }
+`;
+
+
+export const CREATE_TUTORIALS = gql`
+  mutation addTutorial($TutorialInput: TutorialInput!){
+  addTutorial(tutorial:$TutorialInput){
+    _id
+    title
+    description
+    video
+    image
+  }
+}
+`;
+
+
 export const GET_COURSES = gql`
   query {
     courses {
@@ -39,6 +161,7 @@ export const GET_COURSES = gql`
     }
   }
 `;
+
 
 export const DELETE_COURSE = gql`
   mutation deleteCourse($courseId: String!){
@@ -57,6 +180,43 @@ export const CREATE_COURSE = gql`
         username
         _id
       }
+    }
+  }
+`;
+
+export const CREATE_TEST = gql`
+  mutation addTest($testInput: TestInput!){
+  addTest(test: $testInput){
+    _id
+    description
+    image
+    inputAnswer{
+      content
+      isCorrect
+    }
+  }
+}
+`;
+export const GET_POSTS = gql`
+  query{
+    tests{
+      _id
+      description
+      image
+      inputAnswer{
+      isCorrect
+        image
+        content
+      }
+    }
+}
+`;
+
+
+export const DELETE_TEST = gql`
+  mutation removeTest($testId: String!){
+    removeTest(testId:$testId){
+      _id
     }
   }
 `;

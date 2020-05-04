@@ -21,6 +21,7 @@ import Tutorial from "views/tutorial/Tutorial.js"
 import TutorialAdmin from "views/tutorialAdmin/TutorialAdmin.js"
 import TestAdmin from "views/TestAdmin/TestAdmin.js";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
+import Users from "views/Users/Users.js";
 // core components/views for RTL layout
 
 
@@ -33,11 +34,18 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   
+  // {
+  //   path: "/durem",
+  //   name: "Дүрэм админ",
+  //   icon: Dashboard,
+  //   component: DuremAdmin,
+  //   layout: "/admin"
+  // },
   {
-    path: "/durem",
-    name: "Дүрэм админ",
+    path: "/users",
+    name: "Хэрэглэгчид",
     icon: Dashboard,
-    component: DuremAdmin,
+    component: Users,
     layout: "/admin"
   },
   
@@ -60,7 +68,7 @@ const dashboardRoutes = [
     name: "Шалгалтад бэлдэх",
     icon: Unarchive,
     component: BeldehAdmin,
-    layout: "/student"
+    layout: "/admin"
   },
   {
     path: "/test",
@@ -103,7 +111,7 @@ const dashboardRoutes = [
     name: "Шалгалтад бэлдэх",
     icon: Unarchive,
     component: Beldeh,
-    layout: "/admin"
+    layout: "/student"
   },
 
 ];

@@ -25,7 +25,7 @@ module.exports = {
           description: args.post.description,
           image: args.post.image,
           title: args.post.title,
-          createdDate: args.post.createdDate,
+          createdDate: new Date(),
           author: context.user._id,
         });
 

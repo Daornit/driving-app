@@ -33,7 +33,7 @@ export default function Sidebar(props) {
     routesWithLevel = routesWithLevel.filter(route => route.layout === '/admin');
   }
 
-  if(type === 'STUDENT') {
+  if(type === 'CLIENT') {
     routesWithLevel = routesWithLevel.filter(route => route.layout === '/student');
   }
   

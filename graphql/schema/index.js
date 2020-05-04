@@ -54,7 +54,6 @@ module.exports = gql`
     _id: ID!
     title: String!
     description: String!
-    type: String!
     image: String
     createdDate: String!
     author: User!
@@ -63,7 +62,7 @@ module.exports = gql`
     title: String!
     description: String!
     image: String
-    createdDate: String!
+
   }
   type DuremCategory{
     _id: ID!
@@ -86,7 +85,7 @@ module.exports = gql`
     _id: ID!
     description: String!
     image: String
-    inputAnswer: [TestAnswer!]!
+    inputAnswer: [TestAnswer!]! 
   }
   type TestAnswer {
     content: String
@@ -150,6 +149,7 @@ module.exports = gql`
   type Exam{
     _id: ID!
   }
+
   type AuthData {
     _id: ID!
     exp: Int!

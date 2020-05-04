@@ -2,28 +2,25 @@ import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
+import GridItem from "components/Grid/GridItem";
+import GridContainer from "components/Grid/GridContainer";
+import Table from "components/Table/Table";
 import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardBody from "components/Card/CardBody.js";
-import Button from "components/CustomButtons/Button.js";
+import CardHeader from "components/Card/CardHeader";
+import CardBody from "components/Card/CardBody";
+import Button from "components/CustomButtons/Button";
 import Modal from '@material-ui/core/Modal';
-import CustomInput from "components/CustomInput/CustomInput.js";
+import CustomInput from "components/CustomInput/CustomInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Tasks from "components/Tasks/Tasks";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
-import Box from '@material-ui/core/Box';
-import avatar from "assets/img/faces/test1.jpg";
-import CardAvatar from "components/Card/CardAvatar.js";
-
-
 import TextField from '@material-ui/core/TextField';
 
-import { GET_TUTORIALS, DELETE_TUTORIALS, CREATE_TUTORIALS } from 'queries';
+
+//graphql
+import { GET_USERS, BAN_USERS, CREATE_USERS } from 'queries';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import notification from 'helpers/notification';
 
@@ -84,22 +81,24 @@ const useStyles = makeStyles(
     }
   })
 );
-export default function TutorialAdmin() {
+
+export default function Users() {
   const classes = useStyles();
 
-  const [ deleteTutorial ] = useMutation(DELETE_TUTORIALS);
-  const [ createTutorial ] = useMutation(CREATE_TUTORIALS);
+  const [ banUsers ] = useMutation(BAN_USERS);
+  const [ createUsers ] = useMutation(CREATE_USERS);
 
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [newTutorial, setNewTutorial] = React.useState({
-    title: "",
-    image: "",
-    description:"",
-    video:""
+  const [newUser, setNewUser] = React.useState({
+    username: "",
+    email: "",
+    avatar: "",
+    type:"",
+    password:""
   });
 
-  const { loading, err, data, refetch } = useQuery(GET_TUTORIALS);
+  const { loading, err, data, refetch } = useQuery(GET_USERS);
 
   if (loading) return 'Loading...';
   if (err) {
@@ -109,42 +108,47 @@ export default function TutorialAdmin() {
 
   const handleChange = event => {
     const name = event.target.name;
-    setNewTutorial({
-      ...newTutorial,
+    setNewUser({
+      ...newUser,
       [name]: event.target.value,
     });
   };
 
-  const handleCreateTutorial = () => {
-    console.log(newTutorial);
-    if(!newTutorial.title){
+  const handleCreateUsers = () => {
+    console.log(newUser);
+    if(!newUser.username){
       notification.error('name talbariig zaaval buglunu uu')
       return;
     }
-    createTutorial({
+    createUsers({
       variables: {
-        Tutorial: newTutorial
+        ...newUser,
+        phone: Number(newUser.phone)
       }
     })
     refetch();
-    setNewTutorial({
-      title: "",
-      description:""
+    setNewUser({
+      username: "",
+      email: "",
+      avatar: "",
+      type:"",
+      password:""
     })
     setOpen(false);
     notification.success('amjilttai uuslee')
   }
 
-  let listOfTutorial = [];
-  if(data && data.tutorials){
-    data.tutorials.forEach((obj, index) => {
-      let tutorial = [];
-      tutorial.push(index);
-      tutorial.push(obj.title);
-      tutorial.push(obj.description);
-      tutorial.push(obj.video);
-      tutorial.push(obj.image);
-      tutorial.push(<IconButton
+  let listOfUsers = [];
+  if(data && data.users){
+    data.users.forEach((obj, index) => {
+      let users = [];
+      users.push(index);
+      users.push(obj.username);
+      users.push(obj.type);
+      users.push(obj.email);
+      users.push(obj.phone);
+      users.push(obj.isBanned ? "in active" : "active");
+      users.push(<IconButton
                       aria-label="Close"
                       className={classes.tableActionButton}
                     > <Close
@@ -152,9 +156,9 @@ export default function TutorialAdmin() {
                       classes.tableActionButtonIcon + " " + classes.close
                     }
                     onClick={() => {
-                        deleteTutorial({
+                        banUsers({
                           variables: {
-                            tutorialId: obj._id
+                            userId: obj._id
                           }
                         });
                         refetch();
@@ -162,10 +166,10 @@ export default function TutorialAdmin() {
                     }
                   />
                 </IconButton>);
-      listOfTutorial.push(tutorial);
+      listOfUsers.push(users);
     })
   }
-  console.log(listOfTutorial);
+  
   const handleOpen = () => {
     setOpen(true);
   };
@@ -180,17 +184,47 @@ export default function TutorialAdmin() {
         <GridContainer id="simple-modal-title">
           <CardHeader color="primary">
             <GridItem xs={12} sm={12} md={12}>
-              <h4 className={classes.cardTitleWhite}>Зарлал нэмэх</h4>
+              <h4 className={classes.cardTitleWhite}>Хэрэглэгч нэмэх</h4>
             </GridItem>
           </CardHeader>
         </GridContainer>
         <CardBody>
             <GridContainer id="simple-modal-description">
-              <GridItem xs={12} sm={12} md={12}>
+              <GridItem xs={12} sm={12} md={6}>
                 <TextField
-                  label="Гарчиг" 
-                  name="title"
-                  value={newTutorial.title}
+                  label="Нэр" 
+                  name="username"
+                  value={newUser.username}
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                  label="Төрөл" 
+                  name="type"
+                  value={newUser.type}
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                  label="Цахим шуудан(Email)" 
+                  name="email"
+                  value={newUser.email} 
+                  className={classes.margin15}
+                  onChange={handleChange}
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={12} md={6}>
+                <TextField
+                  label="Утасны дугаар" 
+                  name="phone"
+                  value={newUser.phone} 
                   className={classes.margin15}
                   onChange={handleChange}
                   fullWidth
@@ -199,8 +233,8 @@ export default function TutorialAdmin() {
               <GridItem xs={12} sm={12} md={12}>
                 <TextField
                   label="Зургийн URL" 
-                  name="image"
-                  value={newTutorial.image}
+                  name="avatar"
+                  value={newUser.avatar} 
                   className={classes.margin15}
                   onChange={handleChange}
                   fullWidth
@@ -208,25 +242,12 @@ export default function TutorialAdmin() {
               </GridItem>
               <GridItem xs={12} sm={12} md={12}>
                 <TextField
-                  label="Видеоны URL" 
-                  name="video"
-                  value={newTutorial.video}
+                  label="Password" 
+                  name="password"
+                  value={newUser.password}
                   className={classes.margin15}
                   onChange={handleChange}
                   fullWidth
-                />
-              </GridItem>
-            </GridContainer>
-            <br></br>
-            <GridContainer>
-              <GridItem xs={12} sm={12} md={12}>
-                <TextareaAutosize style={{width: "100%"}}
-                  name="description"
-                  value={newTutorial.description} 
-                  className={classes.margin15}
-                  onChange={handleChange}
-                  rows={10}
-                  placeholder="Дэлгэрэнгүй тайлбар."  
                 />
               </GridItem>
             </GridContainer>
@@ -236,7 +257,7 @@ export default function TutorialAdmin() {
             <Button
               fullWidth
               color="primary" 
-              onClick={handleCreateTutorial}         
+              onClick={handleCreateUsers}         
               >
               Нэмэх
             </Button>
@@ -247,66 +268,50 @@ export default function TutorialAdmin() {
   );
   return (
     <GridContainer>
-      
       <Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="simple-modal-title"
-  aria-describedby="simple-modal-description"
->{body}</Modal>
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
       <GridItem xs={12} sm={12} md={12}>
-        
         <Card>
-          
-<GridContainer>
-<GridItem xs={12} sm={12} md={12}>
-          <CardHeader color="primary">
-            <GridContainer>
-          <GridItem xs={12} sm={12} md={8}>
-            <h4 className={classes.cardTitleWhite}>Онлайн хичээл</h4>
-            <p className={classes.cardCategoryWhite}>
-              Дүрмийн хичээлийн онлайн материал
-            </p>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <CardHeader color="primary">
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={8}>
+                    <h4 className={classes.cardTitleWhite}>Хэрэглэгчид</h4>
+                      <p className={classes.cardCategoryWhite}>
+                        Манай вебд бүртгэлтэй Хэрэглэгчид
+                      </p>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <Button
+                      fullWidth
+                      color="white"
+                      onClick={handleOpen}          
+                    >
+                      <a color="primary">          
+                        Хэрэглэгч нэмэх
+                      </a>
+                    </Button>
+                  </GridItem> 
+                </GridContainer>     
+              </CardHeader>
             </GridItem>
-            <GridItem xs={12} sm={12} md={4}>
-        <Button
-          fullWidth
-          color="white"
-          onClick={handleOpen}          
-        ><a color="primary">          
-        Хичээл нэмэх
-        </a>
-        </Button>
-        </GridItem> 
-        </GridContainer>     
-          </CardHeader>
-          </GridItem>
           </GridContainer>
           <CardBody>
-            <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                    <Card>
-                        <CardHeader>
-                          <h4>{listOfTutorial.title}</h4>
-                    
-                    </CardHeader>
-                    <CardBody>
-    
-            <GridItem xs={12} sm={12} md={12}>
-            <iframe src={listOfTutorial.video} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </GridItem>
-            <Box><p>
-                {listOfTutorial.description}
-                </p></Box>
-                    </CardBody>
-                    </Card>
-                </GridItem>
-            </GridContainer>
+            <Table
+              tableHeaderColor="primary"
+              tableHead={["ID","Username", "Type", "Email", "Phone", "IsBanned", "BanUser"]}
+              tableData={listOfUsers}
+            />
           </CardBody>
         </Card>
       </GridItem>
-
-      
     </GridContainer>
   );
 }
