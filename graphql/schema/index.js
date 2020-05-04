@@ -155,6 +155,7 @@ module.exports = gql`
     exp: Int!
     email: String!
     token: String!
+    type: String!
   }
 
   type Query {

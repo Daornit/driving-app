@@ -95,6 +95,7 @@ export default function Admin({ ...rest }) {
   return (
     <div className={classes.wrapper}>
       <Sidebar
+        type={localStorage.getItem('type')}
         routes={routes}
         logoText={"UB Drive"}
         logo={logo}

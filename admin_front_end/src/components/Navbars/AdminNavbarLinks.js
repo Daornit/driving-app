@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import { history } from 'helpers';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -47,6 +48,12 @@ export default function AdminNavbarLinks() {
   const handleCloseProfile = () => {
     setOpenProfile(null);
   };
+  const handleLogout = () => {
+    setOpenProfile(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('type');
+    history.push('/login')
+  }
   return (
     <div>
       <div className={classes.searchWrapper}>
@@ -196,7 +203,7 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleLogout}
                       className={classes.dropdownItem}
                     >
                       Logout

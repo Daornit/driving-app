@@ -53,14 +53,14 @@ const dashboardRoutes = [
     name: "Календарь",
     icon: "content_paste",
     component: CalendarStudent,
-    layout: "/admin"
+    layout: "/student"
   },
   {
     path: "/answer",
     name: "Шалгалтад бэлдэх",
     icon: Unarchive,
     component: BeldehAdmin,
-    layout: "/admin"
+    layout: "/student"
   },
   {
     path: "/test",
@@ -74,21 +74,21 @@ const dashboardRoutes = [
     name: "Шалгалт өгөх",
     icon: LibraryBooks,
     component: Test,
-    layout: "/admin"
+    layout: "/student"
   },
   {
     path: "/student/Durem",
     name: "Дүрэм харах",
     icon: Dashboard,
     component: Durem,
-    layout: "/admin"
+    layout: "/student"
   },
   {
     path: "/student/Tutorial",
     name: "Хичээл үзэх",
     icon: Language,
     component: Tutorial,
-    layout: "/admin"
+    layout: "/student"
   },
   {
     path: "/Tutorial",

@@ -2,27 +2,27 @@ import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import GridItem from "views/DuremAdmin/node_modules/components/Grid/GridItem.js.js";
-import GridContainer from "views/DuremAdmin/node_modules/components/Grid/GridContainer.js.js";
-import Table from "views/DuremAdmin/node_modules/components/Table/Table.js.js";
-import Card from "views/DuremAdmin/node_modules/components/Card/Card.js.js";
-import CardHeader from "views/DuremAdmin/node_modules/components/Card/CardHeader.js.js";
-import CardBody from "views/DuremAdmin/node_modules/components/Card/CardBody.js.js";
-import Button from "views/DuremAdmin/node_modules/components/CustomButtons/Button.js.js";
+import GridItem from "components/Grid/GridItem";
+import GridContainer from "components/Grid/GridContainer";
+import Table from "components/Table/Table";
+import Card from "components/Card/Card.js";
+import CardHeader from "components/Card/CardHeader";
+import CardBody from "components/Card/CardBody";
+import Button from "components/CustomButtons/Button";
 import Modal from '@material-ui/core/Modal';
-import CustomInput from "views/DuremAdmin/node_modules/components/CustomInput/CustomInput.js.js";
+import CustomInput from "components/CustomInput/CustomInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import Tasks from "views/DuremAdmin/node_modules/components/Tasks/Tasks";
+import Tasks from "components/Tasks/Tasks";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
 import TextField from '@material-ui/core/TextField';
 
 
 //graphql
-import { GET_COURSES, DELETE_COURSE, CREATE_COURSE } from 'views/DuremAdmin/node_modules/queries.js.js';
+import { GET_COURSES, DELETE_COURSE, CREATE_COURSE } from 'queries';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import notification from 'views/DuremAdmin/node_modules/helpers/notification';
+import notification from 'helpers/notification';
 
 
 function getModalStyle() {

@@ -1,5 +1,20 @@
 import gql from 'graphql-tag';
 
+export const LOGIN_QUERY = gql`
+  mutation login($email: String! $password: String!) {
+    login(
+      email: $email
+      password: $password
+    ) {
+      _id
+      exp
+      email
+      token
+      type
+    }
+  }
+`;
+
 export const ME = gql`
   query me {
     me {

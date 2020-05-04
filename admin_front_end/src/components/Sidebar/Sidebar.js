@@ -22,13 +22,32 @@ const useStyles = makeStyles(styles);
 export default function Sidebar(props) {
   const classes = useStyles();
   // verifies if routeName is the one active (in browser input)
+
   function activeRoute(routeName) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
-  const { color, logo, image, logoText, routes } = props;
+  const { color, logo, image, logoText, routes, type } = props;
+
+  let routesWithLevel = [...routes];
+  if(type === 'ADMIN') {
+    routesWithLevel = routesWithLevel.filter(route => route.layout === '/admin');
+  }
+
+  if(type === 'STUDENT') {
+    routesWithLevel = routesWithLevel.filter(route => route.layout === '/student');
+  }
+  
+  if(type === 'DIRECTOR') {
+    routesWithLevel = routesWithLevel.filter(route => route.layout === '/director');
+  }
+
+  if(type === 'TEACHER') {
+    routesWithLevel = routesWithLevel.filter(route => route.layout === '/teacher');
+  }
+
   var links = (
     <List className={classes.list}>
-      {routes.map((prop, key) => {
+      {routesWithLevel.map((prop, key) => {
         var activePro = " ";
         var listItemClasses;
         if (prop.path === "/upgrade-to-pro") {

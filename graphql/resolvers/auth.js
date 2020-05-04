@@ -45,6 +45,7 @@ module.exports = {
         _id: user.id,
         email: user._doc.email,
         token: token,
+        type: user._doc.type,
         exp: 1,
       };
     },

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { history } from './helpers';
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
@@ -13,6 +14,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 // core components
 import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
+import SignIn from "views/Login/SingIn";
+
 import ReactNotification from 'react-notifications-component';
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
@@ -39,17 +42,18 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-const hist = createBrowserHistory();
-
 ReactDOM.render(
   
   <ApolloProvider client={client}>
     <>
       <ReactNotification/>
-      <Router history={hist}>
+      <Router history={history}>
         <Switch>
+          <Route exact path="/login" component={SignIn} />
           <Route path="/admin" component={Admin} />
-          <Route path="/rtl" component={RTL} />
+          <Route path="/student" component={Admin} />
+          <Route path="/teacher" component={Admin} />
+          <Route path="/director" component={Admin} />
           <Redirect from="/" to="/admin/course" />
         </Switch>
       </Router>
