@@ -85,6 +85,7 @@ module.exports = gql`
     _id: ID!
     description: String!
     image: String
+    hint: String
     inputAnswer: [TestAnswer!]! 
   }
   type TestAnswer {
@@ -95,6 +96,7 @@ module.exports = gql`
   input TestInput{
     description: String!
     image: String
+    hint: String
     inputAnswer: [TestAnswerInput!]!
   }
   input TestAnswerInput {
@@ -171,7 +173,7 @@ module.exports = gql`
     duremuud: [Durem!]!
     tests: [Test!]!
     #course
-    courses: [Course!]!
+    courses(studentId: String): [Course!]!
     posts: [Post!]!
     chats: [Chat!]!
 
@@ -205,7 +207,7 @@ module.exports = gql`
     removeStudentFromCourse(userId: String! courseId: String!): Course!
     addTeacherToCourse(userId: String! courseId: String!): Course!
     removeTeacherFromCourse(userId: String! courseId: String!): Course!
-
+    
     #teacher hiih uildel
     addCalendarSchedule(studentId: String! schedule: ScheduleInput!): Schedule!
     removeCalendarSchedule(scheduleId: String!): Schedule!

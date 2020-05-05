@@ -16,6 +16,10 @@ const TestSchema = new Schema({
   image: {
     type: String
   },
+  hint: {
+    type: String,
+    default: ""
+  },
 });
 
 module.exports = mongoose.model('Test', TestSchema);

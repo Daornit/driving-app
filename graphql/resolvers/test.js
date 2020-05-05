@@ -2,13 +2,14 @@ const Test = require('mongoose').model('Test');
 const {
   transformTest
 } = require('./merge');
-
+const {shuffle} = require('../../helpers/array.js');
 module.exports = {
   testQueryResolver: {
     tests: async (parent, args, context, info) => {
       try {
         const tests = await Test.find();
-        return tests.map(test => transformTest(test));
+        const randomly = shuffle(tests);
+        return randomly.map(test => transformTest(test));
       } catch (err) {
         throw err;
       }
@@ -23,6 +24,7 @@ module.exports = {
           description: args.test.description,
           image: args.test.image,
           inputAnswer: args.test.inputAnswer,
+          hint: args.test.hint,
         });
 
         console.log("test::", test)
