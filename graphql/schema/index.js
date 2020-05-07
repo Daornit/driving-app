@@ -129,6 +129,7 @@ module.exports = gql`
     description: String
     video: String
     image: String
+    comment: String
   }
   type Schedule{
     _id: ID!
