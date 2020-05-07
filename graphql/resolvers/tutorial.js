@@ -40,6 +40,7 @@ module.exports = {
           description: args.tutorial.description,
           image: args.tutorial.image,
           video: args.tutorial.video,
+          comment: args.tutorial.comment,
         });
 
 

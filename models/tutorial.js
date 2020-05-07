@@ -17,6 +17,9 @@ const TutorialSchema = new Schema({
   video: {
     type: String
   },
+  comment: {
+    type: String
+  },
 });
 
 module.exports = mongoose.model('Tutorial', TutorialSchema);
