@@ -122,6 +122,7 @@ module.exports = gql`
     description: String
     video: String
     image: String
+    comment: String
   }
   input TutorialInput{
     title: String!
@@ -132,8 +133,8 @@ module.exports = gql`
   type Schedule{
     _id: ID!
     events: [Event!]!
-    teacher: User!
-    student: User!
+    teacher: User
+    student: User
   }
   input ScheduleInput{
     name: String
@@ -209,7 +210,7 @@ module.exports = gql`
     removeTeacherFromCourse(userId: String! courseId: String!): Course!
     
     #teacher hiih uildel
-    addCalendarSchedule(studentId: String! schedule: ScheduleInput!): Schedule!
+    addCalendarSchedule(studentId: String schedule: ScheduleInput!): Schedule!
     removeCalendarSchedule(scheduleId: String!): Schedule!
     #teacher bolon client
     sendChat(userId: String, chatInput: ChatInput!): Chat!
