@@ -59,5 +59,37 @@ module.exports = {
         throw err;
       }
     },
+    UpdateTutorial: async (parent, {
+      tutorialId,
+      tutorial = {}
+    }, context, info) => {
+      try {
+        const currentTutorial = await Tutorial.findById(tutorialId);
+        if (!tutorial) throw new Error("Tutorial not exists");
+        const {
+          title,
+          description,
+          video,
+          image,
+          comment
+        } = tutorial;
+
+        console.log(title,video,image,description, comment);
+
+        if (title) currentTutorial.title = title;
+        if (comment) currentTutorial.comment = comment;
+        if (image) currentTutorial.image = image;
+        if (video) currentTutorial.video = video;
+        if (description) currentTutorial.description = description;
+
+        const result = await currentTutorial.save();
+
+        console.log(result);
+        return transformTutorial(result);
+
+      } catch (err) {
+        throw err;
+      }
+    },
   }
 };

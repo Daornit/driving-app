@@ -131,6 +131,14 @@ module.exports = gql`
     image: String
     comment: String
   }
+  input UpdateTutorial {
+    title: String
+    description: String
+    video: String
+    image: String
+    comment: String
+  }
+  
   type Schedule{
     _id: ID!
     events: [Event!]!
@@ -199,6 +207,7 @@ module.exports = gql`
     addTest(test: TestInput!): Test!
     removeTest(testId: String!): Test!
     addTutorial(tutorial: TutorialInput!): Tutorial!
+    UpdateTutorialInput(tutorialId: String!, UpdateTutorial: UpdateTutorial!): Tutorial!
     removeTutorial(tutorialId: String): Tutorial!
 
     #Director hiih uildeluud
