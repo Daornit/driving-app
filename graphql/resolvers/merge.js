@@ -171,11 +171,13 @@ const transformChat = chat => {
 
 const transformSchedule = schedule => {
   return {
-    ...schedule._doc,
     _id: schedule.id,
     teacher: user.bind(this, schedule.teacher),
-    student: user.bind(this, schedule.student),
-    createdDate: dateToString(schedule._doc.createdDate),
+    events: schedule.events.map(obj => ({
+      name: obj.name,
+      startDate: dateToString(obj.date).substr(0, 10) + ' 00:00:00',
+      endDate: dateToString(obj.date).substr(0, 10) + ' 23:59:59',
+    })),
   }
 }
 

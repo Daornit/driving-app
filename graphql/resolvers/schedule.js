@@ -24,9 +24,8 @@ module.exports = {
 
         const schedule = new Schedule({
           teacher: context.user._id,
-          events: args.schedule.events,
+          events: args.events,
         });
-
 
         const result = await schedule.save();
         return transformSchedule(result);
