@@ -9,10 +9,8 @@ const ScheduleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  events: [{
-    date: Date,
-    name: String,
-  }],
+  date: Date,
+  name: String,
 });
 
 module.exports = mongoose.model('Schedule', ScheduleSchema);

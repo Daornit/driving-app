@@ -173,11 +173,9 @@ const transformSchedule = schedule => {
   return {
     _id: schedule.id,
     teacher: user.bind(this, schedule.teacher),
-    events: schedule.events.map(obj => ({
-      name: obj.name,
-      startDate: dateToString(obj.date).substr(0, 10) + ' 00:00:00',
-      endDate: dateToString(obj.date).substr(0, 10) + ' 23:59:59',
-    })),
+    name: schedule.name,
+    startDate: dateToString(schedule.date).substr(0, 10) + ' 00:00:00',
+    endDate: dateToString(schedule.date).substr(0, 10) + ' 23:59:59',
   }
 }
 
