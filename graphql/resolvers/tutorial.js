@@ -59,7 +59,7 @@ module.exports = {
         throw err;
       }
     },
-    UpdateTutorial: async (parent, {
+    updateTutorial: async (parent, {
       tutorialId,
       tutorial = {}
     }, context, info) => {

@@ -142,12 +142,10 @@ module.exports = gql`
   type Schedule{
     _id: ID!
     events: [Event!]!
-    teacher: User
-    student: User
+    teacher: String
   }
   input ScheduleInput{
-    name: String
-    date: String
+    teacherId: String!
     events:[EventInput!]!
   }
   input EventInput{
@@ -198,7 +196,7 @@ module.exports = gql`
     #Admin ii hiih uildel
     createCourse(course: CourseInput!): Course!
     deleteCourse(courseId: String!): Course!
-    addDirector(courseId: String userId: String!): Course!
+    addDirector(courseId: String, userId: String!): Course!
     removeDirector(courseId: String, userId: String): Course!
 
     createDuremCategory(name: String!): DuremCategory!
@@ -207,7 +205,7 @@ module.exports = gql`
     addTest(test: TestInput!): Test!
     removeTest(testId: String!): Test!
     addTutorial(tutorial: TutorialInput!): Tutorial!
-    UpdateTutorialInput(tutorialId: String!, UpdateTutorial: UpdateTutorial!): Tutorial!
+    updateTutorial(tutorialId: String!, updateTutorial: UpdateTutorial!): Tutorial!
     removeTutorial(tutorialId: String): Tutorial!
 
     #Director hiih uildeluud
@@ -220,7 +218,7 @@ module.exports = gql`
     removeTeacherFromCourse(userId: String! courseId: String!): Course!
     
     #teacher hiih uildel
-    addCalendarSchedule(studentId: String schedule: ScheduleInput!): Schedule!
+    addCalendarSchedule(schedule: ScheduleInput!): Schedule!
     removeCalendarSchedule(scheduleId: String!): Schedule!
     #teacher bolon client
     sendChat(userId: String, chatInput: ChatInput!): Chat!

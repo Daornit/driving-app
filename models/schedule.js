@@ -9,10 +9,6 @@ const ScheduleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  student: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
   events: [{
     date: Date,
     name: String,
