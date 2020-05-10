@@ -122,12 +122,11 @@ module.exports = gql`
     description: String
     video: String
     image: String
-    comment: [SomeComments]
+    comment: [SomeComments!]!
   }
   type SomeComments{
     commentDescription: String
     createdDate: String
-    author: User
   }
   input TutorialInput{
     title: String!
@@ -139,7 +138,7 @@ module.exports = gql`
   input CommentInput{
     commentDescription: String
     createdDate: String
-    author: User
+   
   }
   input UpdateTutorial {
     title: String

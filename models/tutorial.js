@@ -19,11 +19,8 @@ const TutorialSchema = new Schema({
   },
   comment: [{
     commentDescription: String,
-    createdDate: Date,
-    author: {
-      type: Schema.Types.ObjectId,
-      ref: "User"
-    }
+    createdDate: Date
+    
   }],
 });
 

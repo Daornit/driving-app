@@ -61,20 +61,20 @@ module.exports = {
     },
     updateTutorial: async (parent, {
       tutorialId,
-      tutorial = {}
+      updateTutorial = {}
     }, context, info) => {
       try {
         const currentTutorial = await Tutorial.findById(tutorialId);
-        if (!tutorial) throw new Error("Tutorial not exists");
+        if (!currentTutorial) throw new Error("Tutorial not exists");
         const {
           title,
           description,
           video,
           image,
           comment
-        } = tutorial;
+        } = updateTutorial;
 
-        console.log(title,video,image,description, comment);
+        console.log(title,video,image,description,comment);
 
         if (title) currentTutorial.title = title;
         if (comment) currentTutorial.comment = comment;
@@ -82,6 +82,7 @@ module.exports = {
         if (video) currentTutorial.video = video;
         if (description) currentTutorial.description = description;
 
+        console.log(comment)
         const result = await currentTutorial.save();
 
         console.log(result);
