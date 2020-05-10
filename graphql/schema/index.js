@@ -118,27 +118,38 @@ module.exports = gql`
   }
   type Tutorial{
     _id: ID!
-    title: String!
+    title: String
     description: String
     video: String
     image: String
-    comment: String
+    comment: [SomeComments]
+  }
+  type SomeComments{
+    commentDescription: String
+    createdDate: String
+    author: User
   }
   input TutorialInput{
     title: String!
     description: String
     video: String
     image: String
-    comment: String
+    comment: [CommentInput]
+  }
+  input CommentInput{
+    commentDescription: String
+    createdDate: String
+    author: User
   }
   input UpdateTutorial {
     title: String
     description: String
     video: String
     image: String
-    comment: String
+    comment: [CommentInput]
   }
   
+
   type Schedule{
     _id: ID!
     date: String!
