@@ -139,6 +139,10 @@ const transformTutorial = tutorial => {
   return {
     ...tutorial._doc,
     _id: tutorial.id,
+    comment: tutorial.comment.map(obj => ({
+      commentDescription: obj.commentDescription,
+      createdDate: dateToString(obj.createdDate)
+    }))
   }
 }
 
