@@ -77,7 +77,7 @@ module.exports = {
         console.log(title,video,image,description,comment);
 
         if (title) currentTutorial.title = title;
-        if (comment) currentTutorial.comment = comment;
+        if (comment) currentTutorial.comment = [...currentTutorial.comment, ...comment];
         if (image) currentTutorial.image = image;
         if (video) currentTutorial.video = video;
         if (description) currentTutorial.description = description;
