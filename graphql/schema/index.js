@@ -122,7 +122,7 @@ module.exports = gql`
     description: String
     video: String
     image: String
-    comment: [SomeComments!]!
+    comment: [SomeComments!]
   }
   type SomeComments{
     commentDescription: String
