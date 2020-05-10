@@ -17,9 +17,14 @@ const TutorialSchema = new Schema({
   video: {
     type: String
   },
-  comment: {
-    type: String
-  },
+  comment: [{
+    commentDescription: String,
+    createdDate: Date,
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
+  }],
 });
 
 module.exports = mongoose.model('Tutorial', TutorialSchema);
